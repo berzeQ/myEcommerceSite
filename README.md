@@ -1,7 +1,7 @@
-# myEcommerceSite
+# FreeStyle Apparel
 
 
-Welcome to [myEcommerceSite]! This is a comprehensive eCommerce platform designed to provide a seamless online shopping experience. Whether you're a customer looking for products or a merchant looking to sell, our platform offers a user-friendly interface and powerful features to meet your needs.
+Welcome to [FreeStyle Apparel]! This is a comprehensive eCommerce platform designed to provide a seamless online shopping experience. Whether you're a customer looking for products or a merchant looking to sell, our platform offers a user-friendly interface and powerful features to meet your needs.
 
 ## Features
 
@@ -25,7 +25,7 @@ Welcome to [myEcommerceSite]! This is a comprehensive eCommerce platform designe
 
 ## Roadmap
 
-Our development team is committed to enhancing and expanding [Your eCommerce Site Name] to provide an even better experience for our users. Here's a step-by-step roadmap with tasks suitable for a beginner programmer:
+Our development team is committed to enhancing and expanding [FreeStyle Apparel]to provide an even better experience for our users. Here's a step-by-step roadmap with tasks suitable for a beginner programmer:
 
 ### Step 1: Initial Setup
 
