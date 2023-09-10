@@ -1,0 +1,28 @@
+.mainFooter{
+    width: 100%;
+    background-color: indigo;
+    height: 50vh;
+    color: white;
+    text-align: center;
+    font-size: 1.7rem;
+
+}
+
+footer .botFooter{
+    display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+width: 92%;
+justify-content: space-around;
+margin: 0 auto;
+align-items: center;
+height: 15vh;
+}
+.grid-footer-item{
+    width: 18%;
+}
+.brands-social{
+    display: flex;
+    flex-direction: column;
+   
+
+}

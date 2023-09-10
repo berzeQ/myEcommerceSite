@@ -1,0 +1,70 @@
+/* styles.css */
+.navContainer {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    height: 300px;
+    position: relative;
+  }
+  .navTop{
+    height: 100px;
+    width: 100%;
+    position: absolute;
+    background-color: aqua;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .navMid{
+        position: absolute;
+        top:100px;
+        height: 100px;
+    width: 100%;
+
+    background-color: blueviolet;
+  }
+  .navBot{
+    top:200px;
+
+    height: 100px;
+    width: 100%;
+        position: absolute;
+
+    background-color: brown;
+  }
+  .navMenu{
+  }
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .partNav1{
+    position: relative;
+  display: flex;
+  justify-content: space-around;
+  font-size: 2.5rem;
+  align-items: center;
+  }
+  
+  .searchBar {
+    /* Your search bar styles */
+    background-color: aqua;
+  }
+  .partNav{
+    background-color: blue;
+  }
+  
+  .user {
+    /* Your user styles */
+    background-color: pink;
+  }
+  
+  .cart {
+    /* Your cart styles */
+    background-color: pink;
+
+  }
+  
