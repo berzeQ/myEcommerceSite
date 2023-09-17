@@ -7,13 +7,13 @@ import Footer from './Footer/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  
   return (
     <main
       className={``}
     >
-     <Navbar/>
+     {/* <Navbar/> */}
      <MainBody/>
-     <Footer/>
     </main>
   )
 }

@@ -1,0 +1,39 @@
+.gridProductContainer{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    justify-content: center;
+    align-items: center;
+    background-color: beige;
+ 
+    width: 100%;
+}
+
+.productImage{
+    height: 600px;
+ background-color: mediumaquamarine;
+
+}
+
+.productDetails{
+    height: 600px;
+    background-color: chartreuse;
+}
+.productSpec{
+    height:500px;
+    background-color: gray;
+}
+.productSpec ul{
+    display: flex;
+    text-decoration: none;
+    list-style-type: none;
+
+    justify-content: space-around;
+    position: relative;
+}
+.productSpec ul li{
+    font-size: 2rem;
+}
+.productOption{
+    height:500px;
+    background-color: rgb(163, 215, 210);
+}

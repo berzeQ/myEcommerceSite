@@ -1,0 +1,8 @@
+.productCardGridContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin: 4rem;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
