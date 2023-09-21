@@ -32,15 +32,28 @@
     justify-content: space-around;
     align-items: center;
 }
+.gridItem{
+  position: relative;
+}
+
+.navCatList{
+  position: absolute;
+  background-color: rgb(246, 246, 246);
+  top: 50px;
+  overflow: hidden;
+
+
+}
+
+
 .botNav{
     display: block;
-  height: 40px;
-  background-color: #8ee0ea;
-  position: relative;
-  overflow-x: hidden;
-  outline: 1px solid #71c3d3;
-  align-items: center;
-  text-align: center;
+    height: 40px;
+    background-color: #8ee0ea;
+    overflow-x: hidden;
+    outline: 1px solid #71c3d3;
+    align-items: center;
+    text-align: center;
 
 }
 

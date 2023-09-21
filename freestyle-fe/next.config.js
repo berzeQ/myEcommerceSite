@@ -6,6 +6,7 @@ const nextConfig = {
 module.exports = {nextConfig,
 
   images:{
-    domains: ['www.google.com'],
+    domains: ['www.google.com', 'localhost'],
+    
   },
 }

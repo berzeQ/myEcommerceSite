@@ -1,3 +1,10 @@
+.path{
+    display: flex;
+    width: 90%;
+    margin:1rem auto;
+    align-items: center;
+    gap: 0.5rem;
+}
 .gridProductContainer{
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -5,7 +12,8 @@
     align-items: center;
     background-color: beige;
  
-    width: 100%;
+    width: 90%;
+    margin: 1rem auto;
 }
 
 .productImage{
@@ -32,6 +40,15 @@
 }
 .productSpec ul li{
     font-size: 2rem;
+}
+
+.prodSpecInfo{
+    background-color: white;
+    color: black;
+    padding: 2rem 5rem;
+    width: 90%;
+    margin: 0 auto;
+    height: 400px;
 }
 .productOption{
     height:500px;
