@@ -3,6 +3,9 @@
 #node modules
 /freestyle-be/node_modules
 /freestyle-fe/node_modules
+#images
+/freestyle-be/uploads
+
 
 # dependencies
 /node_modules
