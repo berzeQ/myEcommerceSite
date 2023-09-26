@@ -1,4 +1,4 @@
-.productCardGridContainer{
+.productCardGridContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     margin: 4rem;
@@ -7,40 +7,35 @@
     text-align: center;
     gap: 5rem;
 }
-.productCard{
+
+.productCard {
     position: relative;
-    display: flex;
     flex-direction: column;
-    height: 35rem;
     border: 1px solid black;
     box-sizing: border-box;
-    overflow: hidden;
     line-height: 2rem;
     letter-spacing: 0.1rem;
     text-align: left;
 }
-.productImg Image{
-width: 100%;
-    
 
+.productImg img {
+    width: 100%;
 }
-.wishIcon{
+
+.wishIcon {
     position: absolute;
     right: 0;
     font-size: 20px;
 }
-.wishIcon:hover{
-    position: absolute;
-    right: 0;
-    font-size: 20px;
-    color:red;
+
+.wishIcon:hover {
+    color: red;
 }
 
-.productInfo{
+.productInfo {
     position: absolute;
-    top:70%;
-    padding:3rem 1rem; 
+    top: 70%;
+    padding: 3rem 1rem;
     font-weight: 900;
     font-size: 1.4rem;
-    
 }

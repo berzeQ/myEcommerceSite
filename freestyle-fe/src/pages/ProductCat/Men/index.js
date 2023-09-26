@@ -41,6 +41,7 @@ function Men() {
                       item._id +
                       "?key=" +
                       Math.random()
+                      // loading="lazy"
                     }
                     alt="Image Description"
                     width={400}

@@ -30,8 +30,6 @@ function AdminPage() {
     }
     formData.append("productImage", file);
 
-    debugger;
-
     const res = await fetch("http://localhost:3006/products", {
       method: "POST",
       body: formData,
