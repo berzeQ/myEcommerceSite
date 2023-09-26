@@ -3,7 +3,7 @@ import styles from "../../../styles/productCard.module.css";
 import Image from "next/image";
 import ProductDisplay from "../../ProductDisplay";
 import Router, { useRouter } from "next/router";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/Favorite";
 function Men() {
   const [productList, setProductList] = useState([]);
   const router = useRouter();
@@ -33,12 +33,8 @@ function Men() {
         <div className={styles.productCardGridContainer}>
           {productList.map((item) => {
             return (
-              <div
-                className="productCard"
-                key={item._id}
-                onClick={() => productDetail()}
-              >
-                <div className="productImg">
+              <div className={styles.productCard} key={item._id}>
+                <div className={styles.productImg}>
                   <Image
                     src={
                       "http://localhost:3006/products-image/" +
@@ -47,15 +43,25 @@ function Men() {
                       Math.random()
                     }
                     alt="Image Description"
-                    width={150}
-                    height={150}
+                    width={400}
+                    height={300}
                     // placeholder="blur"
+                    onClick={() => productDetail()}
                   />
                 </div>
-                <FavoriteIcon />
-                <div className="productName">{item.productName}</div>
-                <div className="productPrice">{item.productPrice}</div>
-                <div className="productDesc">{item.productDesc}</div>
+                <FavoriteBorderIcon />
+                <div className={styles.productInfo}>
+                  <div className="productName" onClick={() => productDetail()}>
+                    {item.productName}
+                  </div>
+                  <div className="productPrice">
+                    <em>$</em>
+                    {item.productPrice}
+                  </div>
+                  <div className="productDesc" onClick={() => productDetail()}>
+                    {item.productDesc}
+                  </div>
+                </div>
               </div>
             );
           })}

@@ -5,4 +5,42 @@
     justify-content: space-around;
     align-items: center;
     text-align: center;
+    gap: 5rem;
+}
+.productCard{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 35rem;
+    border: 1px solid black;
+    box-sizing: border-box;
+    overflow: hidden;
+    line-height: 2rem;
+    letter-spacing: 0.1rem;
+    text-align: left;
+}
+.productImg Image{
+width: 100%;
+    
+
+}
+.wishIcon{
+    position: absolute;
+    right: 0;
+    font-size: 20px;
+}
+.wishIcon:hover{
+    position: absolute;
+    right: 0;
+    font-size: 20px;
+    color:red;
+}
+
+.productInfo{
+    position: absolute;
+    top:70%;
+    padding:3rem 1rem; 
+    font-weight: 900;
+    font-size: 1.4rem;
+    
 }
