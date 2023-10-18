@@ -2,6 +2,22 @@ import React, { useState } from "react";
 import styles from "../../styles/navStyles.module.css";
 import { Router, useRouter } from "next/router";
 import SearchBar from "@/components/searchBar";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  Button,
+  Wrap,
+  WrapItem,
+  Avatar,
+  Icon,
+} from "@chakra-ui/react";
+import { AiOutlineUser } from "@chakra-ui/icons";
 
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +29,7 @@ const Navbar = () => {
   const router = useRouter();
   const [hoveredItem, setHoveredItem] = useState(null);
   const [showCart, setShowCart] = useState(false);
+  const [token, setToken] = useState(null);
 
   const catList = [
     "men",
@@ -56,26 +73,60 @@ const Navbar = () => {
             <SearchBar />
           </div>
           <div className={styles.mainUserNav} tabIndex={0}>
-            <div className={styles.userNav}>userNav</div>
-            <div className={`${styles.navCart} `}>
-              <FontAwesomeIcon
-                icon={faCartShopping}
-                size="2x"
-                onClick={() => setShowCart(!showCart)}
-                onBlur={() => {
-                  alert("hello");
-                  setShowCart(false);
-                }}
-                className="hover:animate-wiggle p-3"
-              />
-              {showCart && (
-                <ShoppingCart
-                  onClick={() => setShowCart(true)}
-                  onMouseEnter={() => setShowCart(true)}
-                  onMouseLeave={() => setShowCart(false)}
-                  setShowCart={setShowCart}
-                />
+            <div className={styles.userNav}>
+              {token ? (
+                <Menu>
+                  <MenuButton>
+                    <Wrap>
+                      <WrapItem>
+                        <Avatar
+                          size="lg"
+                          name="Segun Adebayo"
+                          src="https://bit.ly/sage-adebayo"
+                        />{" "}
+                      </WrapItem>
+                    </Wrap>
+                  </MenuButton>
+                  <MenuList>
+                    <MenuGroup title="Profile">
+                      <MenuItem>My Account</MenuItem>
+                      <MenuItem>Payments </MenuItem>
+                    </MenuGroup>
+                    <MenuDivider />
+                    <MenuGroup title="Help">
+                      <MenuItem>Docs</MenuItem>
+                      <MenuItem>FAQ</MenuItem>
+                    </MenuGroup>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <Menu>
+                  <MenuButton>
+                    <Wrap>
+                      <WrapItem>
+                        <Avatar
+                          bg="red.500"
+                          // icon={<AiOutlineUser fontSize="1.5rem" />}
+                        />
+                      </WrapItem>
+                    </Wrap>
+                  </MenuButton>
+                  <MenuList>
+                    <MenuGroup title="Profile">
+                      <MenuItem>Login</MenuItem>
+                      <MenuItem>Register </MenuItem>
+                    </MenuGroup>
+                    <MenuDivider />
+                    <MenuGroup title="Help">
+                      <MenuItem>Docs</MenuItem>
+                      <MenuItem>FAQ</MenuItem>
+                    </MenuGroup>
+                  </MenuList>
+                </Menu>
               )}
+            </div>
+            <div className={`${styles.navCart} `}>
+              <ShoppingCart />
             </div>
           </div>
         </div>
