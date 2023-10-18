@@ -28,19 +28,9 @@
 }
 .productSpec{
     height:500px;
-    background-color: gray;
+    background-color: rgb(252, 246, 246);
 }
-.productSpec ul{
-    display: flex;
-    text-decoration: none;
-    list-style-type: none;
 
-    justify-content: space-around;
-    position: relative;
-}
-.productSpec ul li{
-    font-size: 2rem;
-}
 
 .prodSpecInfo{
     background-color: white;
