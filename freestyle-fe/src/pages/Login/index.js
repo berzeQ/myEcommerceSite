@@ -1,24 +1,37 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { useToast } from "@chakra-ui/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-
-import { useDispatch } from "react-redux";
-import { setLoginDetails } from "../../redux/reducerSlices/userSlice";
 import styles from "../../styles/register.module.css";
+import { useToast } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { setLoginDetails } from "@/redux/reducerSlices/userSlice";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({ subsets: ["latin"] });
+
 const LoginSchema = Yup.object().shape({
   phoneNumber: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
+
+  password: Yup.string()
+    .required("Please enter a password")
+    .min(8, "Password must have at least 8 characters")
+    .matches(/[0-9]/, "Password must include at least one digit")
+    .matches(/[a-z]/, "Password must include at least one lowercase letter")
+    .matches(/[A-Z]/, "Password must include at least one uppercase letter"),
 });
 
 const Login = () => {
   const toast = useToast();
-  const router = useRouter();
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const statuses = ["success", "error", "warning", "info"];
+
   const handleLogin = async (values) => {
     const res = await fetch("http://localhost:3006/login", {
       method: "POST",
@@ -26,97 +39,77 @@ const Login = () => {
       body: JSON.stringify(values),
     });
     const data = await res.json();
-    if (data) console.log(data);
     if (data.isLoggedIn) {
       dispatch(setLoginDetails(data));
-      if (data?.userInfo?.role == "Admin") {
-        router.push("/admin/dashboard");
-      } else {
-        router.push("/");
-      }
+      router.push("/");
     }
-
+    console.log(data);
+    // if()
     toast({
       title: data.msg,
-      status: res.status == 401 ? "warning" : "success",
+      // description: "We've created your account for you.",
+      status: res.status === 404 ? "error" : "success",
+      duration: 3000,
       isClosable: true,
     });
   };
-  return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className=" sm:mx-auto sm:w-full sm:max-w-sm">
-          <h1 className="text-xl font-bold leading-tight tracking-tight pb-3 text-gray-900 md:text-2xl dark:text-white">
-            Signup
-          </h1>
-          <Formik
-            initialValues={{
-              phoneNumber: "",
-              password: "",
-            }}
-            validationSchema={LoginSchema}
-            onSubmit={(values, { resetForm }) => {
-              handleLogin(values);
-              resetForm();
-            }}
-          >
-            {({ errors, touched }) => (
-              <Form className="space-y-4 md:space-y-6">
-                <div>
-                  <label
-                    for="phoneNumber"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Phone Number
-                  </label>
-                  <Field
-                    name="phoneNumber"
-                    placeholder="Phone Number"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
-                {errors.phoneNumber && touched.phoneNumber ? (
-                  <div>{errors.phoneNumber}</div>
-                ) : null}
-                <div>
-                  <label
-                    for="password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Password
-                  </label>
-                  <Field
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
-                {errors.password && touched.password ? (
-                  <div>{errors.password}</div>
-                ) : null}
 
-                <button
-                  type="submit"
-                  className="w-full text-white bg-gray-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                >
-                  Sign In
-                </button>
-              </Form>
-            )}
-          </Formik>
-          <p className="text-sm font-light pt-3 text-gray-500 dark:text-gray-400">
-            Don't have an account yet?{" "}
-            <Link
-              href="/Register"
-              className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-            >
-              Register
-            </Link>
-          </p>
-        </div>
+  return (
+    <div className={`${styles.container}  ${montserrat.className}`}>
+      <div className={styles.form}>
+        <h1 className={styles.formHeader}>Sign In</h1>
+        <Formik
+          initialValues={{
+            phoneNumber: "",
+
+            password: "",
+          }}
+          validationSchema={LoginSchema}
+          onSubmit={(values, { resetForm }) => {
+            // same shape as initial values
+            handleLogin(values);
+            resetForm();
+            console.log(values);
+          }}
+        >
+          {({ errors, touched }) => (
+            <Form>
+              <Field
+                className={styles.formInput}
+                name="phoneNumber"
+                placeholder="Phone Number"
+              />
+              {errors.phoneNumber && touched.phoneNumber ? (
+                <div className={styles.errorMsg}>{errors.phoneNumber}</div>
+              ) : null}
+              <br />
+
+              <Field
+                className={styles.formInput}
+                name="password"
+                type="password" // Use the "password" type to hide the entered characters
+                placeholder="Password"
+              />
+              {errors.password && touched.password ? (
+                <div className={styles.errorMsg}>{errors.password}</div>
+              ) : null}
+              <br />
+              <div className={styles.optionBtn}>
+                <div className={styles.noAccount}>
+                  <Link href="/Register">Create an account</Link>
+                </div>
+                <div className={styles.forgotPass}>
+                  <Link href="/forgotPass">Forgot Password?</Link>
+                </div>
+              </div>
+              <button className={styles.submitBtn} type="submit">
+                Login
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
-    </>
+    </div>
   );
 };
 
