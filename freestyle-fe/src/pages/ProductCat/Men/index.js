@@ -36,16 +36,16 @@ function Men() {
   }
 
   return (
-    <div className=" h-screen">
+    <div className=" h-max">
       <h1>Men</h1>
       <li>hello</li>
       {productList.length > 0 && (
-        <div className="flex m-10 ">
+        <div className="flex  flex-wrap h-fit  gap-10 justify-evenly items-center w-auto">
           {productList.map((item) => {
             return (
               <div
                 key={item._id}
-                className="mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg"
+                className="  w-1/5 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg"
                 // onClick={() => router.push("/ProductDisplay")}
               >
                 <img

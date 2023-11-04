@@ -62,8 +62,13 @@ const Navbar = () => {
               goToHome();
             }}
           >
-            {/* <Image src= "" width= {50} height = {50} alt = "logo pic"/> */}
-            LOGO
+            <Image
+              src="/logo.PNG"
+              width={250}
+              height={70}
+              alt="logo pic"
+              className="cursor-pointer"
+            />
           </div>
           <div className={styles.searchBar}>
             <SearchBar />
