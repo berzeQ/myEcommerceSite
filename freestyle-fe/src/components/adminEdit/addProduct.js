@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import styles from "../../styles/register.module.css";
 import { useToast } from "@chakra-ui/react";
 
 import Link from "next/link";
+import axios from "axios";
 
 const AddProductSchema = Yup.object().shape({
   productName: Yup.string()
@@ -18,15 +19,34 @@ const AddProductSchema = Yup.object().shape({
 });
 
 function AddProduct() {
+  const [optionsList, setOptionList] = useState([]);
   const [file, setFile] = useState(null);
+  const [cat, setCat] = useState([]);
   const toast = useToast();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("http://localhost:3006/add-category");
+        if (res.data) {
+          setOptionList(res.data.CategoryDetails);
+        }
+      } catch (error) {
+        // Handle error if the request fails
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData(); // Call the async function
+  }, []);
 
   const addItem = async (values) => {
     console.log(values);
+    debugger;
     const formData = new FormData();
     for (let item in values) {
       formData.append(item, values[item]);
     }
+    formData.append("productCat", cat);
     formData.append("productImage", file);
 
     const res = await fetch("http://localhost:3006/products", {
@@ -99,6 +119,37 @@ function AddProduct() {
                     onChange={(e) => setFile(e.target.files[0])}
                     type="file"
                   />
+
+                  <br />
+                  <div className="flex gap-5">
+                    category:{" "}
+                    {cat.map((catItem) => {
+                      return <p>{catItem}</p>;
+                    })}
+                  </div>
+                  <Field
+                    as="select"
+                    name="productCat"
+                    multiple // Enable multiple selection
+                    onChange={(e) =>
+                      setCat([
+                        ...cat,
+                        ...Array.from(
+                          e.target.selectedOptions,
+                          (option) => option.value
+                        ),
+                      ])
+                    }
+                  >
+                    <option value="" disabled>
+                      Select an option
+                    </option>
+                    {optionsList.map((option, index) => (
+                      <option key={index} value={option.CatName} onClic>
+                        {option.CatName}
+                      </option>
+                    ))}
+                  </Field>
 
                   <br />
 

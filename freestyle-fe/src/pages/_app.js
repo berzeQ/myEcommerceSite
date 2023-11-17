@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 import { store, persistor } from "../redux/store/index";
 import { PersistGate } from "redux-persist/integration/react";
 import styles from "../styles/mainStyles.module.css";
-
 export default function App({ Component, pageProps }) {
   return (
     <div className={styles.bodyCss}>

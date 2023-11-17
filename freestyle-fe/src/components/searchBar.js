@@ -4,6 +4,27 @@ import { useState } from "react";
 function SearchBar() {
   const [showSearchResult, setShowSearchResult] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
+
+  const generateProductList = async (value) => {
+    try {
+      if (value.length > 0) {
+        const res = await fetch(
+          `http://localhost:3006/products-search/${value}`
+        );
+        const data = await res.json();
+        console.log();
+        if (data.productList) {
+          setSearchResult(data.productList);
+          setShowSearchResult(true);
+        }
+      } else {
+        setShowSearchResult(false);
+      }
+    } catch (error) {
+      console.error("Error fetching places:", error);
+    }
+  };
+
   return (
     <div className="searchContainer">
       <form>
@@ -34,9 +55,10 @@ function SearchBar() {
           <input
             type="search"
             id="default-search"
-            className="block w-full p-5 px-48 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full p-5 px-48 pl-10 text-md text-neutral-300 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search Clothes ... "
             required
+            onChange={(e) => generateProductList(e.target.value)}
           />
           <button
             type="submit"
@@ -46,8 +68,13 @@ function SearchBar() {
           </button>
         </div>
       </form>
-      {showSearchResult && (
-        <div className="bg-slate-300 h-32 absolute z-10 w-full mt-5"> DOG</div>
+      {showSearchResult && searchResult && (
+        <div className="bg-slate-300 h-32 absolute z-10 w-full mt-5">
+          {" "}
+          {searchResult.map((item) => {
+            return <li>{item.productName}</li>;
+          })}
+        </div>
       )}
     </div>
   );

@@ -2,6 +2,9 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const accountSid = "AC8340581d7337a0cb6e4a4769e802757c";
+const authToken = "59e0f68fcd6e1484393d2d73a04fa2e4";
+const client = require("twilio")(accountSid, authToken);
 
 const GetAllUser = async (req, res) => {
   const data = await User.find();
@@ -61,6 +64,13 @@ const LoginUser = async (req, res) => {
         _id: userExist.id,
       };
       console.log(mutateUser);
+      client.messages
+        .create({
+          body: "Your account has just logged in ",
+          from: "+13343668522",
+          to: "+9779860104051",
+        })
+        .then((message) => console.log(message.sid));
 
       res.status(200).json({
         isLoggedIn: true,

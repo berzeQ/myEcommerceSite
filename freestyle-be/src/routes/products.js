@@ -23,6 +23,8 @@ router.post(
 
 router.get("/products", ProductController.GetAllProducts);
 router.get("/products-image/:id", ProductController.getProductImage);
+router.get("/products/:id", ProductController.getProductByID);
+router.get("/products-search/:query", ProductController.GetSearchProducts);
 
 // router.post('/login', UserController.LoginUser)
 

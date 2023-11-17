@@ -13,6 +13,8 @@ import {
   Image,
   WrapItem,
 } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+
 import { useEffect, useState } from "react";
 import { deleteProductFromCart } from "../../redux/reducerSlices/productSlice";
 import { useRouter } from "next/router";
@@ -85,7 +87,7 @@ export const Checkout = () => {
                             dispatch(deleteProductFromCart(item));
                           }}
                         >
-                          Delete
+                          <DeleteIcon boxSize={10} />
                         </button>
                       </div>
                     </div>
