@@ -1,11 +1,17 @@
-.mainBanner{
-    position: relative;
+@import url('https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap');
 
+.bodyCss{
+    font-family: 'Carrois Gothic SC', sans-serif;
+
+
+}
+.mainBanner{
     margin: 0 auto;
     text-align: center;
     height: 70vh;
     background-color: pink;
     width: 92%;
+    position: relative;
 }
 
 .carousel{
@@ -27,9 +33,11 @@ margin-right: 2rem;
     background-color: palevioletred;
 }
 
-.newArrivals{
+section .newArrivals{
     width: 92%;
     height: 40vh;
     background-color: darkolivegreen;
     margin: 0 auto;
+    text-align: center;
+    position: relative;
 }

@@ -10,8 +10,6 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     addCartList: (state, actions) => {
-      debugger;
-
       const existingCartList = [...state.cartList];
       existingCartList.push(actions.payload);
       state.cartList = existingCartList;

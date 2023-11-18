@@ -2,9 +2,10 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useState } from "react";
 
-function SearchBar() {
+function AdminProductEdit(props) {
   const [showSearchResult, setShowSearchResult] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
+  const [searchItem, setSearchItem] = useState("");
   const router = useRouter();
 
   const generateProductList = async (value) => {
@@ -27,6 +28,30 @@ function SearchBar() {
     }
   };
 
+  async function handleSearchSubmit(e) {
+    e.preventDefault();
+    setShowSearchResult(false);
+
+    try {
+      if (searchItem.length > 0) {
+        const res = await fetch(
+          `http://localhost:3006/products-search-all/${searchItem}`
+        );
+        const data = await res.json();
+        console.log(data);
+        if (data.productList) {
+          props.setProductList(data.productList);
+          props.setProduct(null);
+        }
+      } else {
+        props.setProduct(null);
+        props.setProductList(null);
+      }
+    } catch (error) {
+      console.error("Error fetching places:", error);
+    }
+  }
+
   return (
     <div className="searchContainer">
       <form>
@@ -39,7 +64,7 @@ function SearchBar() {
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
-              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              className="w-7 h-6 text-red-500"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -60,24 +85,31 @@ function SearchBar() {
             className="block w-full p-5 px-48 pl-10 text-md text-neutral-300 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search Clothes ... "
             required
-            onChange={(e) => generateProductList(e.target.value)}
+            onChange={(e) => {
+              generateProductList(e.target.value);
+              setSearchItem(e.target.value);
+            }}
           />
           <button
-            type="submit"
             className="text-white absolute right-2.5 bottom-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={(e) => handleSearchSubmit(e)}
           >
             Search
           </button>
         </div>
       </form>
       {showSearchResult && searchResult && (
-        <div className="bg-slate-300 h-32 absolute z-10 w-full mt-5">
+        <div className="bg-slate-300 h-32 absolute z-10 p-5  w-11/12   overflow-scroll">
           {" "}
           {searchResult.map((item) => {
             return (
               <li
                 className="cursor-pointer list-none"
-                onClick={() => router.push(`/ProductDisplay/${item._id}`)}
+                onClick={() => {
+                  props.setProduct(item);
+                  setShowSearchResult(false);
+                  props.setProductList(null);
+                }}
               >
                 {item.productName}
               </li>
@@ -89,4 +121,4 @@ function SearchBar() {
   );
 }
 
-export default SearchBar;
+export default AdminProductEdit;

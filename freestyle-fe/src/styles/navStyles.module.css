@@ -116,4 +116,8 @@
         transform: translateX(100%); /* Slide from right to left */
     }
   }
+
+  .searchBar{
+    position: relative;
+  }
   

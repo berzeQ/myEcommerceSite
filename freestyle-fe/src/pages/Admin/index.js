@@ -1,11 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import styles from "../../styles/register.module.css";
 import { useToast } from "@chakra-ui/react";
-import { Montserrat } from "next/font/google";
 import { handleLogin } from "../index";
 import Link from "next/link";
+import {
+  Button,
+  VStack,
+  StackDivider,
+  Box,
+  Tabs,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Tab,
+  HStack,
+  Heading,
+  Card,
+  Stack,
+  Text,
+  Image,
+  CardBody,
+  CardFooter,
+  SimpleGrid,
+  CardHeader,
+} from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import style from "../../styles/adminPage.module.css";
+import AddBrand from "@/components/adminEdit/addBrand";
+import AddProduct from "@/components/adminEdit/addProduct";
+import AddCat from "@/components/adminEdit/addCategories";
+import EditProduct from "@/components/adminEdit/EditProduct";
 
 const AddProductSchema = Yup.object().shape({
   productName: Yup.string()
@@ -19,27 +45,53 @@ const AddProductSchema = Yup.object().shape({
 });
 
 function AdminPage() {
+  const { userDetails } = useSelector((state) => state.user);
+
   const [file, setFile] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [heroImageSrc, setHeroImageSrc] = useState(null);
+  const [mainImageSrc, setMainImageSrc] = useState(null);
+  const cardData = [
+    { name: "HeroBanner", title: "Hero Banner" },
+    { name: "MainBanner", title: "Main Banner" },
+    // Add more cards as needed
+  ];
+
   const toast = useToast();
 
   const addItem = async (values) => {
-    console.log(values);
-    const formData = new FormData();
-    for (let item in values) {
-      formData.append(item, values[item]);
-    }
-    formData.append("productImage", file);
+    // Your existing code for adding products
+  };
 
-    const res = await fetch("http://localhost:3006/products", {
-      method: "POST",
-      body: formData,
-    });
-    console.log(res);
+  const addImage = async (imageName) => {
+    const formData = new FormData();
+    formData.append("imageName", imageName);
+    formData.append("imagePath", imageFile);
+
+    const res = await fetch(
+      "http://localhost:3006/admin?imageName=" + imageName,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
     const data = await res.json();
-    console.log(data, data.status);
+
+    if (res.status === 200) {
+      if (imageName === "HeroBanner") {
+        setHeroImageSrc(
+          `http://localhost:3006/admin?imageName=${imageName}&key=${Math.random()}`
+        );
+      } else if (imageName === "MainBanner") {
+        setMainImageSrc(
+          `http://localhost:3006/admin?imageName=${imageName}&key=${Math.random()}`
+        );
+      }
+    }
+
     toast({
       title: data.msg,
-      // description: "We've created your account for you.",
       status: res.status === 409 ? "error" : "success",
       duration: 9000,
       isClosable: true,
@@ -47,71 +99,123 @@ function AdminPage() {
   };
 
   return (
-    <div>
-      <div className="addProductContainer">
-        <div className={`${styles.container} `}>
-          <div className={styles.form}>
-            <h1 className={styles.formHeader}>Add new Product</h1>
-            <Formik
-              initialValues={{
-                productName: "",
-                productPrice: "",
-                productDesc: "",
-              }}
-              validationSchema={AddProductSchema}
-              onSubmit={(values, { resetForm }) => {
-                // same shape as initial values
-                addItem(values);
-                resetForm();
-                console.log(values);
-              }}
-            >
-              {({ errors, touched }) => (
-                <Form>
-                  <Field
-                    className={styles.formInput}
-                    name="productName"
-                    placeholder="Enter product Name"
-                  />
-                  {errors.productName && touched.productName ? (
-                    <div className={styles.errorMsg}>{errors.productName}</div>
-                  ) : null}
-                  <br />
-                  <Field
-                    className={styles.formInput}
-                    name="productPrice"
-                    placeholder="Enter Product Price"
-                  />
-                  {errors.productPrice && touched.productPrice ? (
-                    <div className={styles.errorMsg}>{errors.productPrice}</div>
-                  ) : null}
-                  <br />
-                  <Field
-                    className={styles.formInput}
-                    placeholder="Enter Product Description"
-                    name="productDesc"
-                    type="text"
-                  />
-                  {errors.productDesc && touched.productDesc ? (
-                    <div className={styles.errorMsg}>{errors.productDesc}</div>
-                  ) : null}
-                  <br />
-                  <input
-                    onChange={(e) => setFile(e.target.files[0])}
-                    type="file"
-                  />
+    <div className="mx-9 my-5 relative max-h-none">
+      <Heading>My Account</Heading>
+      <Tabs isManual variant="enclosed">
+        <HStack spacing={10} align="stretch" maxW="100%">
+          <TabList w="20%">
+            <VStack spacing={4}>
+              <Tab fontSize="2xl" className={style.leftAlignedTab}>
+                Profile
+              </Tab>
+              <Tab fontSize="2xl" style={{ textAlign: "left" }}>
+                Edit Product
+              </Tab>
+              <Tab fontSize="2xl" className={style.leftAlignedTab}>
+                Add Product
+              </Tab>
+              <Tab fontSize="2xl" style={{ textAlign: "left" }}>
+                Payment Details
+              </Tab>
+              <Tab fontSize="2xl" style={{ textAlign: "left" }}>
+                Edit Images
+              </Tab>
+              <Tab fontSize="2xl" style={{ textAlign: "left" }}>
+                Add Brands
+              </Tab>
+              <Tab fontSize="2xl" style={{ textAlign: "left" }}>
+                Add Categories
+              </Tab>
+            </VStack>
+          </TabList>
 
-                  <br />
-
-                  <button className={styles.submitBtn} type="submit">
-                    ADD
-                  </button>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </div>
-      </div>
+          <TabPanels bg={"gray"} maxH="none" h="100%">
+            <TabPanel>{/* Profile tab content */}1</TabPanel>
+            <TabPanel>
+              <EditProduct />
+            </TabPanel>
+            <TabPanel>
+              <AddProduct />
+            </TabPanel>
+            <TabPanel>{/* Add new product tab content */}2</TabPanel>
+            <TabPanel>
+              <SimpleGrid
+                spacing={10}
+                templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+              >
+                <Card>
+                  <CardHeader>
+                    <Heading size="md">Hero Banner</Heading>
+                  </CardHeader>
+                  <CardBody>
+                    <Image
+                      className="h-48 w-full object-cover object-center"
+                      src={
+                        heroImageSrc ||
+                        `http://localhost:3006/admin?imageName=HeroBanner&key=${Math.random()}`
+                      }
+                      alt="Hero Banner"
+                    />
+                    <div>
+                      <label htmlFor="HeroBanner">Hero Banner</label>
+                      <input
+                        type="file"
+                        name="HeroBanner"
+                        id="HeroBanner"
+                        onChange={(e) => {
+                          setImageFile(e.target.files[0]);
+                        }}
+                      />
+                    </div>
+                  </CardBody>
+                  <CardFooter>
+                    <Button onClick={() => addImage("HeroBanner")}>
+                      View here
+                    </Button>
+                  </CardFooter>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <Heading size="md">Main Banner</Heading>
+                  </CardHeader>
+                  <CardBody>
+                    <Image
+                      className="h-48 w-full object-cover object-center"
+                      src={
+                        mainImageSrc ||
+                        `http://localhost:3006/admin?imageName=MainBanner&key=${Math.random()}`
+                      }
+                      alt="Main Banner"
+                    />
+                    <div>
+                      <label htmlFor="MainBanner">Main Banner</label>
+                      <input
+                        type="file"
+                        name="MainBanner"
+                        id="MainBanner"
+                        onChange={(e) => {
+                          setImageFile(e.target.files[0]);
+                        }}
+                      />
+                    </div>
+                  </CardBody>
+                  <CardFooter>
+                    <Button onClick={() => addImage("MainBanner")}>
+                      View here
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </SimpleGrid>
+            </TabPanel>
+            <TabPanel>
+              <AddBrand />
+            </TabPanel>
+            <TabPanel>
+              <AddCat />
+            </TabPanel>
+          </TabPanels>
+        </HStack>
+      </Tabs>
     </div>
   );
 }

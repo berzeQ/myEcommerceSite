@@ -1,12 +1,12 @@
 const express = require("express");
-const Product = require("../models/products");
+const Images = require("../models/Images");
 const router = express.Router();
-const ProductController = require("../controllers/products");
+const ImageController = require("../controllers/multiImages");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/productsImage/");
+    cb(null, "uploads/mainImage/");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -15,17 +15,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.post(
-  "/products",
-  upload.single("productImage"),
-  ProductController.CreateNewProduct
-);
+router.post("/admin", upload.single("imagePath"), ImageController.CreateImage);
 
-router.get("/products", ProductController.GetAllProducts);
-router.get("/products-image/:id", ProductController.getProductImage);
-router.get("/products/:id", ProductController.getProductByID);
-router.get("/products-search/:query", ProductController.GetSearchProducts);
-router.get("/products-search-all/:query", ProductController.GetAllSearch);
+// router.get("/products", ProductController.GetAllProducts);
+router.get("/admin", ImageController.getImage);
 
 // router.post('/login', UserController.LoginUser)
 

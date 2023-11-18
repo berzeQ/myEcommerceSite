@@ -18,18 +18,22 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { AiOutlineUser } from "@chakra-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
 
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import ShoppingCart from "../../components/shoppingCart";
+import { logout } from "@/redux/reducerSlices/userSlice";
 
 // import Marquee from "react-fast-marquee";
 const Navbar = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const [showCart, setShowCart] = useState(false);
-  const [token, setToken] = useState(null);
+
+  // const [token, setToken] = useState(null);
+
+  const { token } = useSelector((state) => state.user);
 
   const catList = [
     "men",
@@ -40,14 +44,6 @@ const Navbar = () => {
     "3XL",
     "accessories",
   ];
-  const handleMouseEnter = (category) => {
-    // Set the hovered item to the current category
-    setHoveredItem(category);
-  };
-  const handleMouseLeave = () => {
-    // Reset the hovered item when leaving
-    setHoveredItem(null);
-  };
 
   const productPage = () => {
     router.push("/ProductCat/Men");
@@ -66,8 +62,13 @@ const Navbar = () => {
               goToHome();
             }}
           >
-            {/* <Image src= "" width= {50} height = {50} alt = "logo pic"/> */}
-            LOGO
+            <Image
+              src="/logo.PNG"
+              width={250}
+              height={70}
+              alt="logo pic"
+              className="cursor-pointer"
+            />
           </div>
           <div className={styles.searchBar}>
             <SearchBar />
@@ -89,8 +90,12 @@ const Navbar = () => {
                   </MenuButton>
                   <MenuList>
                     <MenuGroup title="Profile">
-                      <MenuItem>My Account</MenuItem>
-                      <MenuItem>Payments </MenuItem>
+                      <MenuItem onClick={() => router.push("/Account")}>
+                        My Account
+                      </MenuItem>
+                      <MenuItem onClick={() => dispatch(logout())}>
+                        Logout{" "}
+                      </MenuItem>
                     </MenuGroup>
                     <MenuDivider />
                     <MenuGroup title="Help">
@@ -113,8 +118,12 @@ const Navbar = () => {
                   </MenuButton>
                   <MenuList>
                     <MenuGroup title="Profile">
-                      <MenuItem>Login</MenuItem>
-                      <MenuItem>Register </MenuItem>
+                      <MenuItem onClick={() => router.push("/Login")}>
+                        Login
+                      </MenuItem>
+                      <MenuItem onClick={() => router.push("/Register")}>
+                        Register{" "}
+                      </MenuItem>
                     </MenuGroup>
                     <MenuDivider />
                     <MenuGroup title="Help">
@@ -133,27 +142,7 @@ const Navbar = () => {
 
         <div className={styles.midNav}>
           {catList.map((category) => (
-            <div
-              className={styles.gridItem}
-              key={category}
-              onClick={() => productPage()}
-              onMouseEnter={() => handleMouseEnter(category)}
-              onMouseLeave={handleMouseLeave}
-            >
-              {category.toUpperCase()}
-
-              {hoveredItem === category && (
-                <div className={styles.navCatList}>
-                  <ul>
-                    <li>hello</li>
-                    <li>no</li>
-                    <li>yamete</li>
-                    <li>uWu</li>
-                    <li>heil</li>
-                  </ul>
-                </div>
-              )}
-            </div>
+            <div onClick={() => router.push("/ProductCat/Men")}>{category}</div>
           ))}
         </div>
 
