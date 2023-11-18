@@ -19,6 +19,16 @@ const GetSearchProducts = async (req, res) => {
     res.json({ productList });
   }
 };
+const GetAllSearch = async (req, res) => {
+  const query = req.params.query;
+  const regex = new RegExp(`.*${query}.*`, "i"); // Case-insensitive search
+  const productList = await Product.find({ productName: regex });
+  if (productList && productList.length > 0) {
+    res.json({ productList });
+  } else {
+    res.json({ msg: "no result found" });
+  }
+};
 
 const CreateNewProduct = async (req, res) => {
   console.log(req.body);
@@ -56,4 +66,5 @@ module.exports = {
   getProductImage,
   GetSearchProducts,
   getProductByID,
+  GetAllSearch,
 };

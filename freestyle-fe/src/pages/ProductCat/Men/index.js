@@ -34,6 +34,7 @@ function Men(productList) {
   }
   function handleCartList(values) {
     console.log(values);
+
     if (values) {
       dispatch(addCartList(values));
     }
@@ -53,6 +54,7 @@ function Men(productList) {
             {productList.productList.map((item) => {
               return (
                 <div
+                  onClick={() => handleRoute(item._id)}
                   key={item._id}
                   className="   transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg w-11/12"
                 >
@@ -94,7 +96,7 @@ function Men(productList) {
                   </div>
                   <button
                     type="submit"
-                    onClick={() => handleCartList(item)}
+                    onClick={(e) => (e.stopPropagation(), handleCartList(item))}
                     className="text-white text-center"
                   >
                     Add to cart

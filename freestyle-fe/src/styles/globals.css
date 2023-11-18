@@ -27,6 +27,11 @@
     -webkit-appearance: none;
   }
 }
+::-webkit-search-cancel-button {
+  
+  font-size: 1.5rem;
+  color: red;
+}
 
 body {
   margin: 0;

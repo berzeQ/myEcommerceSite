@@ -31,6 +31,7 @@ import style from "../../styles/adminPage.module.css";
 import AddBrand from "@/components/adminEdit/addBrand";
 import AddProduct from "@/components/adminEdit/addProduct";
 import AddCat from "@/components/adminEdit/addCategories";
+import EditProduct from "@/components/adminEdit/EditProduct";
 
 const AddProductSchema = Yup.object().shape({
   productName: Yup.string()
@@ -107,6 +108,9 @@ function AdminPage() {
               <Tab fontSize="2xl" className={style.leftAlignedTab}>
                 Profile
               </Tab>
+              <Tab fontSize="2xl" style={{ textAlign: "left" }}>
+                Edit Product
+              </Tab>
               <Tab fontSize="2xl" className={style.leftAlignedTab}>
                 Add Product
               </Tab>
@@ -127,6 +131,9 @@ function AdminPage() {
 
           <TabPanels bg={"gray"} maxH="none" h="100%">
             <TabPanel>{/* Profile tab content */}1</TabPanel>
+            <TabPanel>
+              <EditProduct />
+            </TabPanel>
             <TabPanel>
               <AddProduct />
             </TabPanel>

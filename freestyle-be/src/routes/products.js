@@ -25,6 +25,7 @@ router.get("/products", ProductController.GetAllProducts);
 router.get("/products-image/:id", ProductController.getProductImage);
 router.get("/products/:id", ProductController.getProductByID);
 router.get("/products-search/:query", ProductController.GetSearchProducts);
+router.get("/products-search-all/:query", ProductController.GetAllSearch);
 
 // router.post('/login', UserController.LoginUser)
 

@@ -121,35 +121,75 @@ function AddProduct() {
                   />
 
                   <br />
-                  <div className="flex gap-5">
-                    category:{" "}
-                    {cat.map((catItem) => {
-                      return <p>{catItem}</p>;
-                    })}
-                  </div>
-                  <Field
-                    as="select"
-                    name="productCat"
-                    multiple // Enable multiple selection
-                    onChange={(e) =>
-                      setCat([
-                        ...cat,
-                        ...Array.from(
+                  <hr />
+                  <div className="flex justify-between mt-6">
+                    <div>category: </div>
+                    <div className="flex-col gap-5">
+                      {cat.map((catItem) => {
+                        return (
+                          <div className="flex justify-bet  ween items-center gap-10">
+                            <div className="w-4/6">
+                              {" "}
+                              <p>{catItem}</p>{" "}
+                            </div>
+                            <div>
+                              {" "}
+                              <button
+                                onClick={() => {
+                                  let tempCat = cat.filter((item) => {
+                                    if (item !== catItem) return item;
+                                  });
+                                  setCat(tempCat);
+                                }}
+                              >
+                                del
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <Field
+                      as="select"
+                      name="productCat"
+                      multiple // Enable multiple selection
+                      onChange={(e) => {
+                        const selectedOptions = Array.from(
                           e.target.selectedOptions,
                           (option) => option.value
-                        ),
-                      ])
-                    }
-                  >
-                    <option value="" disabled>
-                      Select an option
-                    </option>
-                    {optionsList.map((option, index) => (
-                      <option key={index} value={option.CatName} onClic>
-                        {option.CatName}
+                        );
+
+                        if (
+                          selectedOptions.every((option) =>
+                            cat.includes(option)
+                          )
+                        ) {
+                          // If all selected options are already in the cat array, remove them
+                          const tempCat = cat.filter(
+                            (item) => !selectedOptions.includes(item)
+                          );
+                          setCat(tempCat);
+                        } else {
+                          // Add the selected options that are not already in cat
+                          setCat([
+                            ...cat,
+                            ...selectedOptions.filter(
+                              (option) => !cat.includes(option)
+                            ),
+                          ]);
+                        }
+                      }}
+                    >
+                      <option value="" disabled>
+                        Select an option
                       </option>
-                    ))}
-                  </Field>
+                      {optionsList.map((option, index) => (
+                        <option key={index} value={option.CatName} onClic>
+                          {option.CatName}
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
 
                   <br />
 
