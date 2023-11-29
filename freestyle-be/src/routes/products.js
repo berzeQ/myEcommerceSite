@@ -21,11 +21,18 @@ router.post(
   ProductController.CreateNewProduct
 );
 
-router.get("/products", ProductController.GetAllProducts);
+router.get("/products", ProductController.GetProducts);
 router.get("/products-image/:id", ProductController.getProductImage);
 router.get("/products/:id", ProductController.getProductByID);
 router.get("/products-search/:query", ProductController.GetSearchProducts);
 router.get("/products-search-all/:query", ProductController.GetAllSearch);
+router.get("/all-products", ProductController.GetTotalProduct);
+router.get("/productsCat/:cat", ProductController.getProductByCat);
+router.get(
+  "/countByProductsCat/:cat",
+  ProductController.getCountOfProductByCat
+);
+router.get("/products-cat/:cat", ProductController.GetProductsByCat);
 
 // router.post('/login', UserController.LoginUser)
 
