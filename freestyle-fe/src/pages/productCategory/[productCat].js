@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styles from "../../../styles/productCard.module.css";
+import styles from "../../styles/productCard.module.css";
 import Image from "next/image";
-import ProductDisplay from "../../ProductDisplay/[productID]";
+import ProductDisplay from "../../pages/ProductDisplay/[productID]";
 import Router, { useRouter } from "next/router";
 import FavoriteBorderIcon from "@mui/icons-material/Favorite";
 import { useDispatch } from "react-redux";
@@ -10,35 +10,44 @@ import axios from "axios";
 import PaginationRounded from "@/components/pagination";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-export async function getServerSideProps() {
-  const res = await axios("http://localhost:3006/all-products");
+export async function getServerSideProps(context) {
+  console.log(context.query.productCat);
+  const cat = context.query.productCat;
 
-  const productList = await res.data.productDetails;
-  return { props: { productList } };
+  const res = await axios(`http://localhost:3006/countByProductsCat/${cat}`);
+
+  console.log(res.data);
+  const productCount = await res.data;
+  return { props: { productCount, cat } };
 }
 
-function Men(productList) {
+function productCat({ productCount, cat }) {
   // const [productList, setProductList] = useState([]);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [mainCat, setMainCat] = useState(cat);
   const [totalPages, setTotalPages] = useState(null);
   const [products, setProducts] = useState([]); // Fetched products
   useEffect(() => {
-    if (productList) {
-      const totalProducts = productList.productList;
+    if (productCount && cat) {
+      console.log(productCount);
+      const totalProducts = productCount;
       const productsPerPage = 8; // Change this number based on your desired products per page
       const calculatedTotalPages = Math.ceil(totalProducts / productsPerPage);
       setTotalPages(calculatedTotalPages);
     }
-  }, [productList.productList]);
+
+    setMainCat(cat);
+  }, [productCount, cat]);
+
   console.log(totalPages);
 
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const pageSize = 4;
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 4;
 
-  // const onPageChange = (page) => {
-  //   setCurrentPage(page);
-  // };
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   function handleRoute(id) {
     router.push(`/ProductDisplay/${id}`);
@@ -54,9 +63,10 @@ function Men(productList) {
   const theme = createTheme({
     // Define your Material UI theme here
   });
+
   return (
     <div className=" h-max">
-      <h1>Men</h1>
+      <h1>{mainCat}</h1>
       <li>hello</li>
       {products.length > 0 && (
         <div className="flex items-center justify-center my-10 ">
@@ -119,10 +129,14 @@ function Men(productList) {
       )}
       <ThemeProvider theme={theme}>
         {/* Other components and routes */}
-        <PaginationRounded totalPages={totalPages} setProducts={setProducts} />
+        <PaginationRounded
+          totalPages={totalPages}
+          setProducts={setProducts}
+          mainCat={mainCat}
+        />
       </ThemeProvider>{" "}
     </div>
   );
 }
 
-export default Men;
+export default productCat;

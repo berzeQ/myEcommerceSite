@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 // Instead of importing the whole HStack and VStack, you can import only what you need
 import { HStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const getCat = async (setCatDetails) => {
   const res = await fetch("http://localhost:3006/add-category");
@@ -21,6 +22,7 @@ const Slider = dynamic(() => import("react-slick").then((m) => m.default), {
 
 // You can destructure the "title" directly from props
 const Slide = ({ title, categoryImageId }) => {
+  const router = useRouter();
   const slideStyle = {
     position: "relative",
   };
@@ -36,6 +38,9 @@ const Slide = ({ title, categoryImageId }) => {
     backgroundPosition: "center",
     filter: "blur(3px)", // Adjust the blur intensity as needed
   };
+  function handleRoute(title) {
+    router.push(`/productCategory/${title}`);
+  }
   return (
     <HStack
       w="45%"
@@ -50,7 +55,10 @@ const Slide = ({ title, categoryImageId }) => {
       backgroundColor="purple"
       ml="20%"
       mb="5%"
-      className="drop-shadow-xl"
+      className="drop-shadow-xl cursor-pointer"
+      onClick={() => {
+        handleRoute(title);
+      }}
       // Added border radius for a more visually appealing look
     >
       <div>
