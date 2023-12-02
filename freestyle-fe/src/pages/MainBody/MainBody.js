@@ -10,7 +10,7 @@ const MainBody = () => {
       <div className={`mb-10 ${styles.mainBanner}`}>
         <Image
           className="  object-center object-cover shadow-lg"
-          src={`http://localhost:3006/admin?imageName=MainBanner&key=${Math.random()}`}
+          src={`http://res.cloudinary.com/ddaaysabq/image/upload/v1701277551/imagePath-1701277547108-44798898.jpg?${Date.now()}`}
           alt="Main Banner"
           fill={true}
 

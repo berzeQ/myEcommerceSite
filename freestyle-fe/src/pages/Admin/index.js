@@ -181,10 +181,11 @@ function AdminPage() {
                   <CardBody>
                     <Image
                       className="h-48 w-full object-cover object-center"
-                      src={
-                        mainImageSrc ||
-                        `http://localhost:3006/admin?imageName=MainBanner&key=${Math.random()}`
-                      }
+                      // src={
+                      //   mainImageSrc ||
+                      //   `http://localhost:3006/admin?imageName=MainBanner&key=${Math.random()}`
+                      // }
+                      src={`http://res.cloudinary.com/ddaaysabq/image/upload/v1701277551/imagePath-1701277547108-44798898.jpg?${Date.now()}`}
                       alt="Main Banner"
                     />
                     <div>

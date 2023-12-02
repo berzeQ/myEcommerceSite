@@ -142,7 +142,14 @@ const Navbar = () => {
 
         <div className={styles.midNav}>
           {catList.map((category) => (
-            <div onClick={() => router.push("/ProductCat/Men")}>{category}</div>
+            <div
+              className="cursor-pointer text-lg bg-white"
+              onClick={() => {
+                router.push(`/productCategory/${category.toLowerCase()}`);
+              }}
+            >
+              {category}
+            </div>
           ))}
         </div>
 

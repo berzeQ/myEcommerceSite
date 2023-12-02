@@ -28,17 +28,37 @@ function productCat({ productCount, cat }) {
   const [mainCat, setMainCat] = useState(cat);
   const [totalPages, setTotalPages] = useState(null);
   const [products, setProducts] = useState([]); // Fetched products
+  const [oldCat, setOldCat] = useState(null);
   useEffect(() => {
-    if (productCount && cat) {
-      console.log(productCount);
-      const totalProducts = productCount;
-      const productsPerPage = 8; // Change this number based on your desired products per page
-      const calculatedTotalPages = Math.ceil(totalProducts / productsPerPage);
-      setTotalPages(calculatedTotalPages);
+    if (router.query.productCat !== mainCat) {
+      setMainCat(router.query.productCat);
+      setOldCat(mainCat);
+      setCurrentPage(1); // Reset to page 1 when category changes
     }
+  }, [router.query.productCat, mainCat]);
 
-    setMainCat(cat);
-  }, [productCount, cat]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3006/countByProductsCat/${mainCat}`
+        );
+        const productCount = res.data;
+        if (productCount && mainCat) {
+          const totalProducts = productCount;
+          const productsPerPage = 8;
+          const calculatedTotalPages = Math.ceil(
+            totalProducts / productsPerPage
+          );
+          setTotalPages(calculatedTotalPages);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [mainCat]);
 
   console.log(totalPages);
 
@@ -68,7 +88,7 @@ function productCat({ productCount, cat }) {
     <div className=" h-max">
       <h1>{mainCat}</h1>
       <li>hello</li>
-      {products.length > 0 && (
+      {products?.length > 0 ? (
         <div className="flex items-center justify-center my-10 ">
           <div className="grid grid-cols-4 gap-6 w-10/12">
             {products.map((item) => {
@@ -126,6 +146,8 @@ function productCat({ productCount, cat }) {
             })}
           </div>
         </div>
+      ) : (
+        <h1>No Result Found...</h1>
       )}
       <ThemeProvider theme={theme}>
         {/* Other components and routes */}
@@ -133,6 +155,8 @@ function productCat({ productCount, cat }) {
           totalPages={totalPages}
           setProducts={setProducts}
           mainCat={mainCat}
+          currentPage={currentPage}
+          oldCat={oldCat}
         />
       </ThemeProvider>{" "}
     </div>
