@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -38,7 +38,11 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import TotalPrice from "./TotalPrice";
-import { deleteProductFromCart } from "../redux/reducerSlices/productSlice";
+import {
+  deleteProductFromCart,
+  decrement,
+  increment,
+} from "../redux/reducerSlices/productSlice";
 
 const shoppingCart = (props) => {
   const router = useRouter();
@@ -46,65 +50,35 @@ const shoppingCart = (props) => {
   let totalPrice = 0;
 
   const { cartList } = useSelector((state) => state.product);
+  const [wiggleAnimation, setWiggleAnimation] = useState(false);
+  const [cartListChanged, setCartListChanged] = useState(false);
+
+  useEffect(() => {
+    setCartListChanged(!cartListChanged);
+    if (cartList) {
+      props.setCartItem(cartList.length);
+    }
+    setWiggleAnimation(true);
+
+    const timeout = setTimeout(() => {
+      setWiggleAnimation(false);
+    }, 3000);
+
+    // Clear the timeout on component unmount or when cartList changes
+    return () => clearTimeout(timeout);
+  }, [cartList.length]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
   return (
-    // <Menu>
-    //   <MenuButton>
-    //     <Wrap>
-    //       <WrapItem>
-    //         <FontAwesomeIcon
-    //           icon={faCartShopping}
-    //           size="2x"
-    //           className="hover:animate-wiggle p-3"
-    //         />
-    //       </WrapItem>
-    //     </Wrap>
-    //   </MenuButton>
-    //   {cartList.length > 0 && (
-    //     <MenuList
-    //       w="lg"
-    //       maxH="lg"
-    //       className=" overflow-y-scroll bg-slate-300  mx-auto"
-    //     >
-    //       {cartList.map((product) => {
-    //         return (
-    //           <MenuItem minH="48px" key={product._id + Math.random() * 4}>
-    //             <Image
-    //               src={
-    //                 "http://localhost:3006/products-image/" +
-    //                 product._id +
-    //                 "?key=" +
-    //                 Math.random()
-    //                 // loading="lazy"
-    //               }
-    //               alt={product.productName}
-    //               mr="12px"
-    //               width={0}
-    //               height={0}
-    //               style={{
-    //                 width: "5rem", // Maintain aspect ratio
-    //                 maxHeight: "6rem", // Set your desired height
-    //               }}
-    //             />
-    //             {product.productName}
-    //           </MenuItem>
-    //         );
-    //       })}
-    //       <MenuItem onClick={() => router.push("/Checkout")}>
-    //         Go To Checkout
-    //       </MenuItem>
-    //     </MenuList>
-    //   )}
-    // </Menu>
-
     <>
       <FontAwesomeIcon
         ref={btnRef}
         onClick={onOpen}
         icon={faCartShopping}
         size="2x"
-        className="hover:animate-wiggle p-3"
+        className={`p-3 hover:animate-wiggle ${
+          cartListChanged && wiggleAnimation ? "animate-wiggle" : ""
+        }`}
         cursor="pointer"
       />
 
@@ -126,32 +100,6 @@ const shoppingCart = (props) => {
             <div className="flex-col">
               {cartList.map((product) => {
                 totalPrice += product.productPrice;
-                //         return (
-                //           <MenuItem minH="48px" key={product._id + Math.random() * 4}>
-                //             <Image
-                //               src={
-                //                 "http://localhost:3006/products-image/" +
-                //                 product._id +
-                //                 "?key=" +
-                //                 Math.random()
-                //                 // loading="lazy"
-                //               }
-                //               alt={product.productName}
-                //               mr="12px"
-                //               width={0}
-                //               height={0}
-                //               style={{
-                //                 width: "5rem", // Maintain aspect ratio
-                //                 maxHeight: "6rem", // Set your desired height
-                //               }}
-                //             />
-                //             {product.productName}
-                //           </MenuItem>
-                //         );
-                //       })}
-                //       <MenuItem onClick={() => router.push("/Checkout")}>
-                //         Go To Checkout
-                //       </MenuItem>
 
                 return (
                   <div className="flex gap-4 w-full py-6 justify-between items-center">
@@ -181,7 +129,28 @@ const shoppingCart = (props) => {
                       </div>
                       <div>Rs.{product.productPrice}</div>
                     </div>
-                    <div>Quantity</div>
+                    <div className="flex-col justify-between">
+                      <div>Quantity</div>
+                      <div className="flex flex-row justify-between text-center">
+                        <div>
+                          <button
+                            onClick={() => dispatch(decrement(product))}
+                            className=" bg-slate-400 "
+                          >
+                            -
+                          </button>
+                        </div>
+                        <div>{product.quantity}</div>
+                        <div>
+                          <button
+                            onClick={() => dispatch(increment(product))}
+                            className=" bg-slate-400 "
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                     <div>
                       <button
                         onClick={() => {

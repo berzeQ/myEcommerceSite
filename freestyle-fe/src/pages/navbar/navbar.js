@@ -34,6 +34,7 @@ const Navbar = () => {
   // const [token, setToken] = useState(null);
 
   const { token } = useSelector((state) => state.user);
+  const [cartItem, setCartItem] = useState(null);
 
   const catList = [
     "men",
@@ -134,8 +135,16 @@ const Navbar = () => {
                 </Menu>
               )}
             </div>
-            <div className={`${styles.navCart} `}>
-              <ShoppingCart />
+
+            <div className="relative">
+              {/* ShoppingCart component or icon */}
+
+              <ShoppingCart setCartItem={setCartItem} />
+              <p className="absolute top-0 right-0 -mt-1 -mr-1 flex items-center justify-center w-5 h-5 rounded-full bg-red-600 text-white text-lg font-semibold">
+                {/* Display the number of items in the cart */}
+                {/* Replace 'cartItem' with the actual variable holding the cart count */}
+                {cartItem}
+              </p>
             </div>
           </div>
         </div>

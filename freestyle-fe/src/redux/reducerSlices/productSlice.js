@@ -11,8 +11,17 @@ const productSlice = createSlice({
   reducers: {
     addCartList: (state, actions) => {
       const existingCartList = [...state.cartList];
-      existingCartList.push(actions.payload);
-      state.cartList = existingCartList;
+      const incomingCart = actions.payload;
+
+      const existingItem = existingCartList.find(
+        (item) => item._id === incomingCart._id
+      );
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        existingCartList.push({ ...incomingCart, quantity: 1 });
+        state.cartList = existingCartList;
+      }
     },
     deleteProductFromCart: (state, actions) => {
       console.log(actions.payload._id, "sagar");
@@ -23,8 +32,29 @@ const productSlice = createSlice({
         }
       });
     },
+    increment: (state, actions) => {
+      const existingCartList = [...state.cartList];
+      const incomingCart = actions.payload;
+
+      const existingItem = existingCartList.find(
+        (item) => item._id === incomingCart._id
+      );
+      existingItem ? existingItem.quantity++ : "";
+    },
+    decrement: (state, actions) => {
+      const existingCartList = [...state.cartList];
+      const incomingCart = actions.payload;
+
+      const existingItem = existingCartList.find(
+        (item) => item._id === incomingCart._id
+      );
+      if (existingItem.quantity !== 1) {
+        existingItem.quantity--;
+      }
+    },
   },
 });
 
-export const { addCartList, deleteProductFromCart } = productSlice.actions;
+export const { addCartList, deleteProductFromCart, decrement, increment } =
+  productSlice.actions;
 export default productSlice.reducer;
