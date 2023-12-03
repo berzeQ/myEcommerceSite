@@ -2,8 +2,9 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
-const accountSid = "AC8340581d7337a0cb6e4a4769e802757c";
-const authToken = "59e0f68fcd6e1484393d2d73a04fa2e4";
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 const GetAllUser = async (req, res) => {
