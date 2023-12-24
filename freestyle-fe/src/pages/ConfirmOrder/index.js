@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 import { Button } from "@chakra-ui/react";
 import {
   Modal,
@@ -29,17 +30,30 @@ import { useSelector } from "react-redux";
 const ConfirmOrder = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { userDetails } = useSelector((state) => state.user);
+  const { cartList } = useSelector((state) => state.product);
+  // const [cart, setCart] = useState([{ productId: null, quantity: null }]);
+  const cart = [];
+
+  useEffect(() => {
+    cartList.map((item) => {
+      const newCart = { productId: item._id, quantity: item.quantity };
+      // return setCart((prevCart) => [...prevCart, newCart]);
+      cart.push(newCart);
+    });
+  }, [cartList]);
 
   const handleOrder = async () => {
     alert("hello");
     const orderDetails = {
       user: userDetails._id,
+      cart: cart,
       address: "Kathmandu",
       payment: "On Delivery",
       subTotal: 990099,
       status: "pending",
     };
 
+    console.log(orderDetails);
     const response = await axios.post(
       "http://localhost:3006/OrderConfirm",
       orderDetails

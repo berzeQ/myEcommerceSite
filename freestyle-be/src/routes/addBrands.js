@@ -23,6 +23,7 @@ router.post(
 
 router.get("/brands", BrandController.GetAllBrands);
 router.get("/brands-image/:id", BrandController.getBrandImage);
+router.get("/brands/:id", BrandController.getSpecificBrand);
 
 // router.post('/login', UserController.LoginUser)
 

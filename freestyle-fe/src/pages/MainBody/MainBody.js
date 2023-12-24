@@ -4,19 +4,34 @@ import Image from "next/image";
 import { Box, Divider, AbsoluteCenter } from "@chakra-ui/react";
 import BrandSlider from "@/components/brandSlider";
 import CatSlider from "@/components/categorySlider";
+import { useRouter } from "next/router";
 const MainBody = () => {
+  const router = useRouter();
   return (
     <main className={styles.bodyCss}>
       <div className={`mb-10 ${styles.mainBanner}`}>
         <Image
           className="  object-center object-cover shadow-lg"
-          src={`http://localhost:3006/admin?imageName=MainBanner&key=${Math.random()}`}
+          src={`http://res.cloudinary.com/ddaaysabq/image/upload/v1701277551/imagePath-1701277547108-44798898.jpg?${Date.now()}`}
           alt="Main Banner"
           fill={true}
+          priority
 
           //   width={1000} // Set the actual width of your image in pixels
           //   height={1000}
         />
+        <div className="absolute inset-0 flex flex-col justify-center items-center">
+          <h1 className="text-white text-4xl font-bold mb-4">
+            Wear your personalty!{" "}
+          </h1>
+          <button
+            className="px-6 py-3 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300
+          "
+            onClick={() => router.push("/All-Products")}
+          >
+            Browse All Products
+          </button>
+        </div>
       </div>
 
       <section>

@@ -11,9 +11,11 @@ import { useRouter } from "next/router";
 const getCat = async (setCatDetails) => {
   const res = await fetch("http://localhost:3006/add-category");
   const data = await res.json();
-  const catData = await data.CategoryDetails;
+  if (data) {
+    const catData = await data.CategoryDetails;
 
-  setCatDetails(catData);
+    setCatDetails(catData);
+  }
 };
 
 const Slider = dynamic(() => import("react-slick").then((m) => m.default), {

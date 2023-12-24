@@ -19,6 +19,11 @@ router.post("/admin", upload.single("imagePath"), ImageController.CreateImage);
 
 // router.get("/products", ProductController.GetAllProducts);
 router.get("/admin", ImageController.getImage);
+router.post(
+  "/admin/upload-cloud/:publicId",
+  upload.single("imagePath"),
+  ImageController.UploadImageToCloudinary
+);
 
 // router.post('/login', UserController.LoginUser)
 

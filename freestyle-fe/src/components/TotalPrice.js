@@ -10,7 +10,7 @@ const TotalPrice = (props) => {
   useEffect(() => {
     // Calculate the total price whenever the cartList changes
     const newTotalPrice = cartList.reduce(
-      (total, item) => total + Number(item.productPrice),
+      (total, item) => total + Number(item.productPrice) * item.quantity,
       0
     );
     setTotalPrice(newTotalPrice);

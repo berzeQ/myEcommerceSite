@@ -28,5 +28,17 @@ const getBrandImage = async (req, res) => {
   );
   res.sendFile(imagePath);
 };
-
-module.exports = { GetAllBrands, CreateNewBrand, getBrandImage };
+const getSpecificBrand = async (req, res) => {
+  const brandId = req.params.id;
+  console.log(req.params);
+  const brand = await Brands.findById(brandId);
+  if (brand) {
+    res.json(brand);
+  }
+};
+module.exports = {
+  GetAllBrands,
+  CreateNewBrand,
+  getBrandImage,
+  getSpecificBrand,
+};

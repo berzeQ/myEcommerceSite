@@ -36,13 +36,16 @@ const GetProductsByCat = async (req, res) => {
 
   try {
     const products = await Product.find({
-      productCat: { $regex: new RegExp(`(^|,)${req.params.cat}($|,)`) },
+      productCat: { $regex: new RegExp(`(^|,)${cat}($|,)`, "i") },
     })
       .skip(skip)
       .limit(limit);
     const totalProductsCount = await Product.countDocuments();
-
-    res.json({ products, totalProductsCount });
+    if (products.length > 0) {
+      return res.json({ products, totalProductsCount });
+    } else {
+      return res.json({ msg: "No Result Found" });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -69,9 +72,9 @@ const GetAllSearch = async (req, res) => {
 
 const CreateNewProduct = async (req, res) => {
   req.body.productImage = req.file?.filename;
-
-  await Product.create(req.body);
-  res.status(200).json({ msg: "Product has been added " });
+  console.log(JSON.parse(req.body.productCat));
+  // await Product.create(req.body);
+  // res.status(200).json({ msg: "Product has been added " });
 };
 
 const getProductImage = async (req, res) => {
@@ -103,11 +106,15 @@ const getProductByCat = async (req, res) => {
 const getCountOfProductByCat = async (req, res) => {
   console.log(req.params.cat);
   const productCount = await Product.find({
-    productCat: { $regex: new RegExp(`(^|,)${req.params.cat}($|,)`) },
+    productCat: { $regex: new RegExp(`(^|,)${req.params.cat}($|,)`, "i") },
   }).countDocuments();
+
   if (productCount) {
     console.log(productCount);
     res.json(productCount);
+  } else {
+    console.log("fk me", productCount);
+    res.json({ msg: " fk you all" });
   }
 };
 
