@@ -5,6 +5,10 @@ import styles from "../../styles/register.module.css";
 import { useToast } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { setLoginDetails } from "@/redux/reducerSlices/userSlice";
+import {
+  changeWishList,
+  logoutRemove,
+} from "@/redux/reducerSlices/productSlice";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Montserrat } from "next/font/google";
@@ -39,11 +43,15 @@ const Login = () => {
       body: JSON.stringify(values),
     });
     const data = await res.json();
+    console.log(data, data.userDetails.userWishList);
+
     if (data.isLoggedIn) {
+      dispatch(logoutRemove());
+
       dispatch(setLoginDetails(data));
+      dispatch(changeWishList(data.userDetails.userWishList));
       router.push("/");
     }
-    console.log(data);
     // if()
     toast({
       title: data.msg,

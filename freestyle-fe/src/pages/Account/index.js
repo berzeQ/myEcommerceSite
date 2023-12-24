@@ -17,16 +17,50 @@ import {
   Image,
   CardBody,
   CardFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Input,
+} from "@chakra-ui/react";
+
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import axios from "axios";
+import {
+  changeUserDetails,
+  setLoginDetails,
+} from "@/redux/reducerSlices/userSlice";
 
 const Account = () => {
+  const dispatch = useDispatch();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [pendingOrders, setPendingOrders] = useState([]);
   const { userDetails } = useSelector((state) => state.user);
+  const [imageUrl, setImageUrl] = useState("");
+
+  useEffect(() => {
+    if (userDetails) {
+      // Assuming userDetails has the Cloudinary image URL
+      setImageUrl(
+        `http://res.cloudinary.com/ddaaysabq/image/upload/v1701277551/${
+          userDetails.avatar
+        }.jpg?${Date.now()}` || ""
+      ); // Update imageUrl based on userDetails.avatar or other properties containing the image URL
+    }
+  }, [userDetails]);
+
   const getCharacterValidationError = (str) => {
     return `Your password must have at least 1 ${str} character`;
   };
@@ -63,6 +97,21 @@ const Account = () => {
       // use "ref" to get the value of passwrod.
       .oneOf([Yup.ref("password")], "Passwords does not match"),
   });
+  const initialRef = React.useRef(null);
+  const [avatarImg, setAvatarImg] = useState(null);
+  const formData1 = new FormData();
+  formData1.append("avatar", avatarImg);
+  const avatarImageUpload = async () => {
+    const res = await axios.post(
+      `http://localhost:3006/account/upload-cloud/${userDetails._id}`,
+      formData1
+    );
+    if (res) {
+      console.log(res);
+      console.log(res.data);
+      dispatch(changeUserDetails(res.data.user));
+    }
+  };
   return (
     <div className=" mx-9  my-5 relative max-h-none">
       <Heading>My Account</Heading>
@@ -93,23 +142,61 @@ const Account = () => {
                         boxSize="200px"
                         objectFit="cover"
                         maxW={{ base: "100%", sm: "200px" }}
-                        src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-                        alt="Caffe Latte"
+                        src={imageUrl}
+                        alt={userDetails?.fullName}
+                        fill={true}
+                        priority
                       />
 
                       <Stack lineHeight={0.5}>
                         <CardBody>
                           <Heading size="lg" textAlign="left">
-                            The perfect latte
+                            {userDetails?.fullName}{" "}
                           </Heading>
 
-                          <Text color="gray">{userDetails.email}</Text>
+                          <Text color="gray">{userDetails?.email}</Text>
                         </CardBody>
 
                         <CardFooter>
-                          <Button variant="outline" colorScheme="gray" top={-5}>
+                          <Button
+                            variant="outline"
+                            colorScheme="gray"
+                            top={-5}
+                            onClick={onOpen}
+                            initialFocusRef={initialRef}
+                          >
                             Edit User Image
                           </Button>
+                          <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                              <ModalHeader>Upload your image</ModalHeader>
+                              <ModalCloseButton />
+                              <ModalBody pb={6}>
+                                <FormControl>
+                                  <input
+                                    type="file"
+                                    onChange={(e) =>
+                                      setAvatarImg(e.target.files[0])
+                                    }
+                                  />
+                                </FormControl>
+                              </ModalBody>
+
+                              <ModalFooter>
+                                <Button
+                                  colorScheme="blue"
+                                  mr={3}
+                                  onClick={(e) => {
+                                    avatarImageUpload(), onClose();
+                                  }}
+                                >
+                                  Save
+                                </Button>
+                                <Button onClick={onClose}>Cancel</Button>
+                              </ModalFooter>
+                            </ModalContent>
+                          </Modal>
                         </CardFooter>
                       </Stack>
                     </Card>
@@ -119,7 +206,7 @@ const Account = () => {
                     <Heading>Personal</Heading>{" "}
                     <Formik
                       initialValues={{
-                        fullName: userDetails.fullName.toUpperCase(),
+                        fullName: userDetails?.fullName?.toUpperCase(),
                         password: "",
                         email: "",
                         password: "",

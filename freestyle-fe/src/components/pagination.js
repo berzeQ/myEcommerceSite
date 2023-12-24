@@ -17,13 +17,22 @@ const PaginationRounded = (props) => {
     fetchData(page, props.mainCat);
   }, [page, props.mainCat]);
   const fetchData = async (pageNumber, mainCat) => {
-    const res = await axios(
-      `http://localhost:3006/products-cat/${mainCat}?page=${pageNumber}`
-    );
-
-    if (res && props.setProducts) {
-      console.log(res);
-      props.setProducts(res.data.products);
+    if (mainCat) {
+      const res = await axios(
+        `http://localhost:3006/products-cat/${mainCat}?page=${pageNumber}`
+      );
+      if (res && props.setProducts) {
+        console.log(res);
+        props.setProducts(res.data.products);
+      }
+    } else {
+      const res = await axios(
+        `http://localhost:3006/products?page=${pageNumber}`
+      );
+      if (res && props.setProducts) {
+        console.log(res);
+        props.setProducts(res.data.products);
+      }
     }
   };
   const handlePageChange = (event, value) => {

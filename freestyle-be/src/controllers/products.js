@@ -72,9 +72,9 @@ const GetAllSearch = async (req, res) => {
 
 const CreateNewProduct = async (req, res) => {
   req.body.productImage = req.file?.filename;
-
-  await Product.create(req.body);
-  res.status(200).json({ msg: "Product has been added " });
+  console.log(JSON.parse(req.body.productCat));
+  // await Product.create(req.body);
+  // res.status(200).json({ msg: "Product has been added " });
 };
 
 const getProductImage = async (req, res) => {

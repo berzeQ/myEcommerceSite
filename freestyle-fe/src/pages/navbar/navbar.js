@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../styles/navStyles.module.css";
 import { Router, useRouter } from "next/router";
 import SearchBar from "@/components/searchBar";
@@ -25,6 +25,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import ShoppingCart from "../../components/shoppingCart";
 import { logout } from "@/redux/reducerSlices/userSlice";
+import WishList from "@/components/wishList";
+import { logoutRemove } from "@/redux/reducerSlices/productSlice";
 
 // import Marquee from "react-fast-marquee";
 const Navbar = () => {
@@ -33,8 +35,9 @@ const Navbar = () => {
 
   // const [token, setToken] = useState(null);
 
-  const { token } = useSelector((state) => state.user);
+  const { token, userDetails } = useSelector((state) => state.user);
   const [cartItem, setCartItem] = useState(null);
+  const [wishItem, setWishItem] = useState(null);
 
   const catList = [
     "men",
@@ -52,6 +55,16 @@ const Navbar = () => {
   const goToHome = () => {
     router.push("/");
   };
+  const [imageUrl, setImageUrl] = useState("");
+  useEffect(() => {
+    if (userDetails) {
+      setImageUrl(
+        `http://res.cloudinary.com/ddaaysabq/image/upload/v1701277551/${
+          userDetails.avatar
+        }.jpg?${Date.now()}` || ""
+      );
+    }
+  }, [userDetails]);
 
   return (
     <nav className={styles.mainNav}>
@@ -81,11 +94,7 @@ const Navbar = () => {
                   <MenuButton>
                     <Wrap>
                       <WrapItem>
-                        <Avatar
-                          size="lg"
-                          name="Segun Adebayo"
-                          src="https://bit.ly/sage-adebayo"
-                        />{" "}
+                        <Avatar size="lg" name="Segun Adebayo" src={imageUrl} />{" "}
                       </WrapItem>
                     </Wrap>
                   </MenuButton>
@@ -94,7 +103,12 @@ const Navbar = () => {
                       <MenuItem onClick={() => router.push("/Account")}>
                         My Account
                       </MenuItem>
-                      <MenuItem onClick={() => dispatch(logout())}>
+                      <MenuItem
+                        onClick={() => {
+                          dispatch(logout());
+                          dispatch(logoutRemove());
+                        }}
+                      >
                         Logout{" "}
                       </MenuItem>
                     </MenuGroup>
@@ -144,6 +158,16 @@ const Navbar = () => {
                 {/* Display the number of items in the cart */}
                 {/* Replace 'cartItem' with the actual variable holding the cart count */}
                 {cartItem}
+              </p>
+            </div>
+            <div className="relative">
+              {/* ShoppingCart component or icon */}
+
+              <WishList setWishItem={setWishItem} />
+              <p className="absolute top-0 right-0 -mt-1 -mr-1 flex items-center justify-center w-5 h-5 rounded-full bg-red-600 text-white text-lg font-semibold">
+                {/* Display the number of items in the cart */}
+                {/* Replace 'wishItem' with the actual variable holding the cart count */}
+                {wishItem}
               </p>
             </div>
           </div>

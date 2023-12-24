@@ -10,9 +10,10 @@ import { HStack } from "@chakra-ui/react";
 const getBrand = async (setBrandDetails) => {
   const res = await fetch("http://localhost:3006/brands");
   const data = await res.json();
-  const brandData = await data.BrandDetails;
-
-  setBrandDetails(brandData);
+  if (data) {
+    const brandData = await data.BrandDetails;
+    setBrandDetails(brandData);
+  }
 };
 
 const Slider = dynamic(() => import("react-slick").then((m) => m.default), {

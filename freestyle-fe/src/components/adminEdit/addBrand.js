@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { useState } from "react";
 import axios from "axios";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { Button } from "@chakra-ui/react";
 
 const AddBrand = () => {
   const [brandImg, setBrandImg] = useState(null);
@@ -11,6 +14,7 @@ const AddBrand = () => {
   // at us.
   const [allBrand, setAllBrand] = useState([]);
   const [signal, setSignal] = useState(false);
+  const [viewBrand, setViewBrand] = useState(null);
 
   useEffect(() => {
     async function fetchBrandsData() {
@@ -41,8 +45,23 @@ const AddBrand = () => {
       if (data) setSignal(!signal);
     },
   });
+  const searchBrand = async (brandId) => {
+    const res = await axios(`http://localhost:3006/brands/${brandId}`);
+    if (res) {
+      console.log(res);
+      setViewBrand(res.data);
+    }
+  };
+  const BrandEditSchema = Yup.object().shape({
+    BrandName: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+
+    BrandDesc: Yup.string().min(2, "Too Short!").max(50, "Too Long!"),
+  });
   return (
-    <div className="flex w-full">
+    <div className="flex w-full justify-around">
       <div>
         <form
           onSubmit={formik.handleSubmit}
@@ -89,9 +108,66 @@ const AddBrand = () => {
         {allBrand &&
           allBrand.length > 0 &&
           allBrand.map((brand) => {
-            return <li>{brand.BrandName}</li>;
+            return (
+              <li
+                onClick={() => {
+                  searchBrand(brand._id), console.log(viewBrand);
+                }}
+              >
+                {brand.BrandName}
+              </li>
+            );
           })}
       </div>
+      {viewBrand && (
+        <div>
+          {/* <form action="POST">
+            <input type="text" />
+            <p>{viewBrand.BrandName}</p>
+          </form> */}
+          <Formik
+            initialValues={{
+              BrandName: "jello",
+              BrandDesc: viewBrand?.BrandDesc,
+            }}
+            validationSchema={BrandEditSchema}
+            onSubmit={(values) => {
+              // same shape as initial values
+              console.log(values);
+            }}
+          >
+            {({ errors, touched }) => (
+              <Form className="flex flex-col gap-4 mx-10 text-black">
+                <label htmlFor="BrandName"> Brand Name :</label>
+                <Field
+                  name="BrandName"
+                  type="text"
+                  // placeholder={userDetails.fullName.toUpperCase()}
+                />
+                {errors.BrandName && touched.BrandName ? (
+                  <div>{errors.BrandName}</div>
+                ) : null}
+
+                <label htmlFor="BrandDesc"> Brand Description:</label>
+                <Field name="BrandDesc" type="text" />
+                {errors.BrandDesc && touched.BrandDesc ? (
+                  <div>{errors.BrandDesc}</div>
+                ) : null}
+                <Button
+                  className="px-5 py-4 align-middle"
+                  colorScheme="teal"
+                  size="lg"
+                  type="submit"
+                  marginBottom={15}
+                  w={40}
+                >
+                  Submit
+                </Button>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      )}
     </div>
   );
 };

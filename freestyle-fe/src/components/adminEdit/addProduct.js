@@ -46,9 +46,9 @@ function AddProduct() {
     for (let item in values) {
       formData.append(item, values[item]);
     }
-    formData.append("productCat", cat);
+    formData.append("productCat", JSON.stringify(cat));
     formData.append("productImage", file);
-
+    debugger;
     const res = await fetch("http://localhost:3006/products", {
       method: "POST",
       body: formData,
@@ -125,9 +125,12 @@ function AddProduct() {
                   <div className="flex justify-between mt-6">
                     <div>category: </div>
                     <div className="flex-col gap-5">
-                      {cat.map((catItem) => {
+                      {cat.map((catItem, index) => {
                         return (
-                          <div className="flex justify-bet  ween items-center gap-10">
+                          <div
+                            className="flex justify-bet  ween items-center gap-10"
+                            key={index}
+                          >
                             <div className="w-4/6">
                               {" "}
                               <p>{catItem}</p>{" "}

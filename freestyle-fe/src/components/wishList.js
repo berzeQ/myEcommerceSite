@@ -36,7 +36,7 @@ import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
 import TotalPrice from "./TotalPrice";
 import {
   deleteProductFromCart,
@@ -46,38 +46,42 @@ import {
 import axios from "axios";
 import { setLoginDetails } from "@/redux/reducerSlices/userSlice";
 
-const shoppingCart = (props) => {
+const WishList = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
   let totalPrice = 0;
 
-  const { cartList } = useSelector((state) => state.product);
-  const { userDetails } = useSelector((state) => state.user);
+  const { wishList } = useSelector((state) => state.product);
+  const { isLoggedIn, userDetails } = useSelector((state) => state.user);
   const [wiggleAnimation, setWiggleAnimation] = useState(false);
-  const [cartListChanged, setCartListChanged] = useState(false);
+  const [wishListChanged, setWisListChanged] = useState(false);
 
-  console.log(userDetails);
-  const cartToDB = async (cartItems) => {
-    const res = await axios.post(
-      "http://localhost:3006/saveCart/655370308002391b385d418c",
-      cartItems
-    );
-    if (res) {
-      console.log(res);
+  console.log(userDetails, "hello");
+  const wishToDB = async (cartItems) => {
+    if (isLoggedIn) {
+      const res = await axios.post(
+        `http://localhost:3006/saveWish/${userDetails._id}`,
+        cartItems
+      );
+      if (res) {
+        console.log(res);
+      }
     }
   };
 
-  const cartAdd = cartList.map((item) => {
-    return { itemId: item._id, quantity: item.quantity };
+  const wishAdd = wishList.map((item) => {
+    return item._id;
   });
-  console.log(cartAdd);
+  console.log(wishAdd);
   useEffect(() => {
+    setWisListChanged(!wishListChanged);
+
     if (userDetails?._id) {
-      cartToDB(cartAdd);
+      wishToDB(wishAdd);
     }
-    setCartListChanged(!cartListChanged);
-    if (cartList) {
-      props.setCartItem(cartList.length);
+
+    if (wishList && wishList.length >= 0) {
+      props.setWishItem(wishList.length);
     }
     setWiggleAnimation(true);
 
@@ -87,7 +91,7 @@ const shoppingCart = (props) => {
 
     // Clear the timeout on component unmount or when cartList changes
     return () => clearTimeout(timeout);
-  }, [cartList]);
+  }, [wishList]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
   return (
@@ -95,10 +99,10 @@ const shoppingCart = (props) => {
       <FontAwesomeIcon
         ref={btnRef}
         onClick={onOpen}
-        icon={faCartShopping}
+        icon={faHeart}
         size="2x"
         className={`p-3 hover:animate-wiggle ${
-          cartListChanged && wiggleAnimation ? "animate-wiggle" : ""
+          wishListChanged && wiggleAnimation ? "animate-wiggle" : ""
         }`}
         cursor="pointer"
       />
@@ -114,13 +118,13 @@ const shoppingCart = (props) => {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader className=" bg-neutral-700 text-white">
-            Your Shopping Cart ({cartList.length})
+            Your Shopping Cart ({wishList.length})
           </DrawerHeader>
 
           <DrawerBody>
             <div className="flex-col">
-              {cartList &&
-                cartList.map((product) => {
+              {wishList &&
+                wishList.map((product) => {
                   totalPrice += product.productPrice;
 
                   return (
@@ -214,4 +218,4 @@ const shoppingCart = (props) => {
   );
 };
 
-export default shoppingCart;
+export default WishList;
