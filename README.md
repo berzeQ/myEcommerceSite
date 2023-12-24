@@ -39,31 +39,32 @@ Our development team is committed to enhancing and expanding [FreeStyle Apparel]
   
 - [x] **Product Catalog Page:** Create a page that displays a list of products with their names, images, and prices.
 
-- [ ] **Login Page:** Design a user login page with fields for email and password.
+- [X] **Login Page:** Design a user login page with fields for email and password.
 
 ### Step 3: Implement User Authentication
 
-- [ ] **User Registration:** Allow users to register by providing an email, password, and other necessary information.
+- [X] **User Registration:** Allow users to register by providing an email, password, and other necessary information.
   
-- [ ] **Login Functionality:** Implement user login functionality using frontend and backend validation.
+- [X] **Login Functionality:** Implement user login functionality using frontend and backend validation.
+    - [x] integrate twillio that sends message to user phone everytime use log ins.
 
 ### Step 4: Enhance User Experience
 
-- [ ] **User Profiles:** Create user profiles where users can manage their personal information and view order history.
+- [X] **User Profiles:** Create user profiles where users can manage their personal information and view order history.
   
-- [ ] **Wishlist:** Implement a wishlist feature that allows users to save products for later.
+- [X] **Wishlist:** Implement a wishlist feature that allows users to save products for later.
 
 ### Step 5: Shopping Cart and Checkout
 
-- [ ] **Shopping Cart:** Develop a shopping cart feature that allows users to add, remove, and update products.
+- [X] **Shopping Cart:** Develop a shopping cart feature that allows users to add, remove, and update products.
   
-- [ ] **Checkout Process:** Implement a checkout process with secure payment integration.
+- [X] **Checkout Process:** Implement a checkout process with secure payment integration.
 
 ### Step 6: Product Management for Merchants
 
 - [ ] **Merchant Dashboard:** Create a dashboard where merchants can manage their products, track sales, and update inventory.
   
-- [ ] **Add/Edit Products:** Implement features to allow merchants to add and edit product details.
+- [X] **Add/Edit Products:** Implement features to allow merchants to add and edit product details.
 
 ### Step 7: Customer Reviews and Discounts
 
@@ -77,9 +78,15 @@ Our development team is committed to enhancing and expanding [FreeStyle Apparel]
   
 - [ ] **Advanced Analytics:** Provide merchants with detailed sales and customer behavior analytics.
 
+- [ ] **Payment Integration:** Provide user with option to pay using famouse paying methods like IMEPAY, ESEWA, KHALTI, etc.
+
+- [ ] **Social Media Handle:** Link with various social media for better reach.
+
 ## Tools Used
 
-- **Frontend:** React( NEXTJs), TailwindCSS
-- **Backend:** Node.js, Express.js
+- **Frontend:** React( NEXTJs), TailwindCSS, ChakraUI, fontawesome icons, redux and redux persist, Axios
+- **Backend:** Node.js, Express.js, multer middleware for image upload through formdata, Twilio for login notification via sms, RESTFUL APIs.
 - **Database:** MongoDB(mongoose)
 - **Stack:** MERN (MongoDB, Express.js, React, Node.js)
+- **Cloud:** Uses cloudinary for user image upload for user and main page's banner;
+
