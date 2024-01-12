@@ -152,6 +152,7 @@ function AddProduct() {
                         );
                       })}
                     </div>
+
                     <Field
                       as="select"
                       name="productCat"
