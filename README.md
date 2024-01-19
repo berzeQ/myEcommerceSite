@@ -13,7 +13,7 @@ Welcome to [FreeStyle Apparel]! This is a comprehensive eCommerce platform desig
 
 - **Search and Filters:** Utilize advanced search and filtering options to quickly find desired products based on various criteria.
 
-- **Payment Integration:** Seamlessly integrate popular payment gateways to ensure secure and smooth transactions. We do not see your your info and only the payment company decides the transaction has been completed or not.
+- **Payment Integration:** Seamlessly integrate popular payment gateways to ensure secure and smooth transactions. We do not see your info and only the payment company decides transaction has been completed or not.
 
 - **Order Management:** Track your orders, view order history, and manage order statuses.
 
