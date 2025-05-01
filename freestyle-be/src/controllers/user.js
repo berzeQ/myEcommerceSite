@@ -1,7 +1,11 @@
 const User = require("../models/user");
+const twilio = require('twilio');
+require('dotenv').config();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+
+
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -11,7 +15,7 @@ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true,
+  secure: process.env.CLOUDINARY_SECURE === 'true',
 });
 
 const GetAllUser = async (req, res) => {
