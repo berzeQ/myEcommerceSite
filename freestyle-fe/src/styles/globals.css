@@ -1,0 +1,54 @@
+ @tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap');
+/*
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+} */
+@layer components {
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+}
+::-webkit-search-cancel-button {
+  
+  font-size: 1.5rem;
+  color: red;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+h1{
+  text-align: center;
+  font-size: 30px;
+  padding: 4rem 0;
+}
+h2{
+  text-align: center;
+  font-size: 20px;
+  padding: 2rem 0;
+}
+h3{
+  text-align: center;
+  font-size: 15px;
+  padding: 2rem 0;
+}
